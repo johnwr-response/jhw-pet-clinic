@@ -25,7 +25,6 @@
 
     <properties>
         <java.version>12</java.version>
-        <start-class>guru.springframework.jhwpetclinic.JhwPetClinicApplication</start-class>
     </properties>
 
     <dependencies>
