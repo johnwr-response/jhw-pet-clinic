@@ -1,10 +1,7 @@
 package guru.springframework.jhwpetclinic.bootstrap;
 
 import guru.springframework.jhwpetclinic.model.*;
-import guru.springframework.jhwpetclinic.services.OwnerService;
-import guru.springframework.jhwpetclinic.services.PetTypeService;
-import guru.springframework.jhwpetclinic.services.SpecialtyService;
-import guru.springframework.jhwpetclinic.services.VetService;
+import guru.springframework.jhwpetclinic.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +14,15 @@ public class DataLoader implements CommandLineRunner {
     private final VetService vetService;
     private final PetTypeService petTypeService;
     private final SpecialtyService specialtyService;
+    private final VisitService visitService
+            ;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtyService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtyService, VisitService visitService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.specialtyService = specialtyService;
+        this.visitService = visitService;
     }
 
     @Override
@@ -50,6 +50,9 @@ public class DataLoader implements CommandLineRunner {
         Pet justCat = createPet("Just Cat",cat,fiona,LocalDate.now());
         fiona.getPets().add(justCat);
         ownerService.save(fiona);
+
+        Visit fionasCatVisit = createVisit(justCat,"Sneazy Kitty");
+        visitService.save(fionasCatVisit);
 
         System.out.println("Loaded Owners...");
         Vet sam = createVet("Sam", "Axe");
@@ -94,6 +97,13 @@ public class DataLoader implements CommandLineRunner {
         Specialty specialty = new Specialty();
         specialty.setDescription(description);
         return specialty;
+    }
+    private Visit createVisit(Pet pet, String description) {
+        Visit visit = new Visit();
+        visit.setPet(pet);
+        visit.setDate(LocalDate.now());
+        visit.setDescription(description);
+        return visit;
     }
 
 }
